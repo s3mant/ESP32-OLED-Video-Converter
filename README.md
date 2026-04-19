@@ -1,59 +1,85 @@
 # 🎬 ESP32 OLED Video Player (Pro Edition)
 
-Sebuah *web-based tool* komprehensif untuk mengonversi video apapun menjadi animasi 1-bit (Monochrome) yang dapat dijalankan dengan mulus di layar OLED 128x64 (SSD1306 / SH1106) menggunakan mikrokontroler ESP32.
+A comprehensive **web-based tool** for converting any video into a 1-bit (monochrome) animation that runs smoothly on a 128×64 OLED display (SSD1306 / SH1106) using an ESP32 microcontroller.
 
-Project ini tidak hanya mengekstrak *frame*, tetapi juga dilengkapi dengan algoritma *Image Processing* tingkat lanjut yang biasa digunakan oleh *tools* profesional (seperti Image2cpp), memastikan video dan teks kamu tetap tajam, memiliki gradasi halus, dan tidak menjadi siluet hitam pekat.
+This project doesn’t just extract frames—it also includes advanced **image processing algorithms** typically found in professional tools (like Image2cpp), ensuring your videos and text remain sharp, maintain smooth gradients, and avoid turning into solid black silhouettes.
 
-## ✨ Fitur Utama (Pro Edition)
-* 🧮 **Advanced Dithering Algorithms:** Mendukung **Bayer 8x8** (Super halus untuk video), **Atkinson** (Mencegah bayangan *nge-blok* hitam), dan **Floyd-Steinberg**.
-* 📏 **Smart Scaling & Panning:** Pilihan skala mulai dari *Best Fit*, *Stretch*, *Fill / Cover* (penuhi layar tanpa merusak rasio), hingga *Custom* (atur W, H, X, Y secara manual).
-* 🖋️ **Sub-Pixel Thickness (Morphology):** Fitur penipis/penebal teks dan garis secara halus menggunakan hitungan desimal, menyelamatkan detail kecil agar tidak hilang di layar OLED.
-* 👁️ **NTSC Luminance Conversion:** Menggunakan rumus persepsi mata manusia untuk mendeteksi warna abu-abu/coklat dengan sangat akurat sebelum dijadikan hitam-putih.
-* ⚡ **High-Performance ESP32 Code:** Kode hasil *generate* menggunakan metode `millis()` (Non-blocking) untuk FPS konstan dan fitur *I2C Overclock* (800 kHz) agar video berjalan tanpa *lag*.
-* 💾 **Auto-Save Settings:** Semua pengaturan *slider* dan *dropdown* di web akan tersimpan otomatis secara lokal di *browser* kamu.
+---
 
-## 🛠️ Perangkat Keras yang Dibutuhkan
-1. **ESP32** (NodeMCU/WROOM)
-2. **Display OLED 128x64** (Chip SSD1306 atau SH110X, Komunikasi I2C)
-3. Kabel Jumper
+## ✨ Key Features (Pro Edition)
 
-### Konfigurasi Pin (Wiring Standar)
+* 🧮 **Advanced Dithering Algorithms:** Supports **Bayer 8×8** (ultra-smooth for video), **Atkinson** (prevents heavy black blocking), and **Floyd-Steinberg**.
+* 📏 **Smart Scaling & Panning:** Options include *Best Fit*, *Stretch*, *Fill/Cover* (fills screen without breaking aspect ratio), and *Custom* (manual W, H, X, Y control).
+* 🖋️ **Sub-Pixel Thickness (Morphology):** Fine control to thin/thicken text and lines using decimal precision—preserves small details on OLED displays.
+* 👁️ **NTSC Luminance Conversion:** Uses human visual perception formulas to accurately detect grayscale tones before converting to black and white.
+* ⚡ **High-Performance ESP32 Code:** Generated code uses `millis()` (non-blocking) for stable FPS and includes **I2C overclocking (800 kHz)** for smooth playback without lag.
+* 💾 **Auto-Save Settings:** All slider and dropdown settings are automatically saved locally in your browser.
+
+---
+
+## 🛠️ Hardware Requirements
+
+1. **ESP32** (NodeMCU / WROOM)
+2. **128×64 OLED Display** (SSD1306 or SH110X, I2C interface)
+3. Jumper wires
+
+### Standard Wiring Configuration
+
 | OLED Pin | ESP32 Pin |
-| :---: | :---: |
-| VCC | 3.3V |
-| GND | GND |
-| SDA | GPIO 21 |
-| SCL | GPIO 22 |
+| :------: | :-------: |
+|    VCC   |    3.3V   |
+|    GND   |    GND    |
+|    SDA   |  GPIO 21  |
+|    SCL   |  GPIO 22  |
 
-## 📦 Kebutuhan Software (Library)
-Pastikan kamu sudah menginstal library berikut di Arduino IDE (via Library Manager):
+---
+
+## 📦 Software Requirements (Libraries)
+
+Make sure the following libraries are installed in Arduino IDE (via Library Manager):
+
 * `Adafruit GFX Library`
-* `Adafruit SSD1306` (Jika menggunakan OLED SSD1306)
-* `Adafruit SH110X` (Jika menggunakan OLED SH1106)
+* `Adafruit SSD1306` (for SSD1306 displays)
+* `Adafruit SH110X` (for SH1106 displays)
 
-## 🚀 Cara Penggunaan
+---
 
-### 1. Ekstrak Video di Web Converter
-1. Buka halaman Web Converter (Buka file `index.html` di browser atau kunjungi link GitHub Pages project ini).
-2. Masukkan video yang ingin kamu tampilkan. *(Tips: Kamu bisa menekan tombol "Putar 90°" jika menggunakan video vertikal / Reels).*
-3. Atur metode *Dithering*, *Skala*, dan *Ketebalan Garis* hingga *preview* di layar terlihat memuaskan.
-4. Klik **Mulai Extract Frame-by-Frame** dan tunggu hingga selesai.
+## 🚀 How to Use
 
-### 2. Upload ke ESP32
-1. Klik **Copy Data Array**, lalu *paste* hasilnya ke sebuah file / tab baru di Arduino IDE dengan nama `VideoFrame.h`.
-2. Klik **Copy Kode Main.ino**, lalu *paste* ke file utama *sketch* Arduino kamu.
-3. Di dalam file `Main.ino`, pilih tipe OLED yang kamu gunakan dengan menghapus tanda komentar (`//`) pada bagian `#define PAKAI_SSD1306` atau `#define PAKAI_SH1106`.
-4. **⚠️ PENTING:** Karena array video memakan memori Flash yang besar, masuk ke menu **Tools > Partition Scheme** di Arduino IDE dan ubah menjadi **"Huge APP (3MB No OTA/1MB SPIFFS)"**.
-5. Klik **Upload** ke ESP32.
+### 1. Extract Video via Web Converter
 
-## 💡 Pro-Tips Pengaturan Gambar
-* **Untuk Video Manusia / Pemandangan:** Gunakan metode **Bayer 8x8 Dithering**. Ini akan menghasilkan gradasi bintik yang stabil dan tidak bergetar saat video berjalan.
-* **Untuk Animasi Teks / Kartun Kartun Simple:** Gunakan **Solid Threshold**. Jika teks terlihat terputus-putus, tambahkan *Ketebalan Garis* ke arah **Putih +** (Misal: 0.5 atau 1.0).
-* **Untuk Mencegah Objek Gelap Menyatu (Siluet):** Gunakan metode **Atkinson Dithering** dikombinasikan dengan menaikkan *Brightness* sedikit.
+1. Open the Web Converter page (open `index.html` in your browser or use the GitHub Pages link).
+2. Upload the video you want to display.
+   *(Tip: Use the “Rotate 90°” button for vertical videos / reels.)*
+3. Adjust **Dithering**, **Scaling**, and **Line Thickness** until the preview looks right.
+4. Click **Start Frame-by-Frame Extraction** and wait for completion.
 
-## 👨‍💻 Kreator
-Dikembangkan dan dioprek dengan 💻 oleh **Tri Wahyu**.
-* 📸 Instagram: [@Triwahyu45](https://instagram.com/Triwahyu45)
-* 🎥 YouTube: [Tri Wahyu](https://youtube.com/@Triwahyu45)
+---
 
-Jika *tool* ini bermanfaat buat *project* robotika, *skripsi*, atau sekadar iseng-iseng kamu, jangan lupa kasih ⭐ (Star) di repository ini ya!
+### 2. Upload to ESP32
+
+1. Click **Copy Data Array**, then paste it into a new file/tab in Arduino IDE named `VideoFrame.h`.
+2. Click **Copy Main.ino Code**, then paste it into your main Arduino sketch file.
+3. In `Main.ino`, select your OLED type by uncommenting either:
+
+   ```cpp
+   #define PAKAI_SSD1306
+   // or
+   #define PAKAI_SH1106
+   ```
+4. ⚠️ **IMPORTANT:** Since video arrays consume large flash memory, go to:
+   **Tools > Partition Scheme → select “Huge APP (3MB No OTA / 1MB SPIFFS)”**
+5. Click **Upload** to your ESP32.
+
+---
+
+## 💡 Pro Tips for Image Settings
+
+* **For real-life videos / landscapes:**
+  Use **Bayer 8×8 dithering** → stable gradients, no flickering.
+
+* **For text or simple cartoons:**
+  Use **Solid Threshold** → if text looks broken, increase **Line Thickness toward White +** (e.g., 0.5–1.0).
+
+* **To prevent dark objects merging (silhouette effect):**
+  Use **Atkinson dithering** + slightly increase **Brightness**.
